@@ -27,13 +27,16 @@ final class ClassSessionsShortcode
         <div class="class-sessions">
             <?php foreach ($sessions as $session): ?>
                 <?php
-                $addToCartUrl = esc_url(
-                        add_query_arg(
-                                'add-to-cart',
-                                $session['product_id'],
-                                wc_get_cart_url()
-                        )
-                );
+                $currentQty = 0;
+
+                if (WC()->cart) {
+                    foreach (WC()->cart->get_cart() as $item) {
+                        if ((int)$item['product_id'] === (int)$session['product_id']) {
+                            $currentQty = (int)$item['quantity'];
+                        }
+                    }
+                }
+                $remainingQuantity = (int)$session['remaining_capacity'] - $currentQty;
                 ?>
                 <div class="class-session">
                     <h3>
@@ -49,14 +52,47 @@ final class ClassSessionsShortcode
                         <?php echo esc_html(number_format($session['price'], 2)); ?> €
                     </p>
 
-                    <?php if ((int)$session['remaining_capacity'] > 0): ?>
+                    <?php if ($remainingQuantity > 0): ?>
                         <p>
                             <strong>Remaining spots:</strong>
-                            <?php echo (int)$session['remaining_capacity']; ?>
+                            <?php echo $remainingQuantity; ?>
                         </p>
-                        <a href="<?php echo $addToCartUrl; ?>" class="button reserve-disabled">
-                            Reserve
-                        </a>
+
+                        <form method="post" action="<?php echo esc_url(wc_get_cart_url()); ?>">
+                            <input
+                                    type="hidden"
+                                    name="class_booking_action"
+                                    value="reserve"
+                            />
+                            <input
+                                    type="hidden"
+                                    name="add-to-cart"
+                                    value="<?php echo (int)$session['product_id']; ?>"
+                            />
+
+                            <input
+                                    type="hidden"
+                                    name="class_booking_product_id"
+                                    value="<?php echo (int) $session['product_id']; ?>"
+                            />
+
+                            <label>
+                                Persons:
+                                <input
+                                        type="number"
+                                        name="quantity"
+                                        min="1"
+                                        max="<?php echo $remainingQuantity; ?>"
+                                        value="1"
+                                        required
+                                />
+                            </label>
+
+                            <button type="submit" class="button">
+                                Reserve
+                            </button>
+                        </form>
+
                     <?php else: ?>
                         <p class="sold-out">
                             Sold out
@@ -69,4 +105,5 @@ final class ClassSessionsShortcode
 
         return ob_get_clean();
     }
+
 }
