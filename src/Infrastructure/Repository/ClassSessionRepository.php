@@ -53,36 +53,72 @@ final class ClassSessionRepository
         return (bool) $result;
     }
 
-
-    public function findActive(): array
+    public function find(int $id): ?array
     {
         global $wpdb;
 
-        return $wpdb->get_results(
-            "SELECT *
-         FROM {$this->table}
-         WHERE status = 'active'
-         ORDER BY weekday, start_time",
-            ARRAY_A
-        );
-    }
-
-    public function findByProductId(int $productId): ?array
-    {
-        global $wpdb;
-
-        $result = $wpdb->get_row(
+        $row = $wpdb->get_row(
             $wpdb->prepare(
                 "SELECT *
              FROM {$this->table}
-             WHERE product_id = %d
+             WHERE id = %d
              LIMIT 1",
-                $productId
+                $id
             ),
             ARRAY_A
         );
 
-        return $result ?: null;
+        return $row ?: null;
+    }
+
+    public function findUpcomingByClass(int $classPostId): array
+    {
+        global $wpdb;
+
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT *
+             FROM {$this->table}
+             WHERE post_id = %d
+               AND status = 'active'
+               AND session_date >= CURDATE()
+             ORDER BY session_date, start_time",
+                $classPostId
+            ),
+            ARRAY_A
+        );
+    }
+
+    public function insert(array $data): void
+    {
+        global $wpdb;
+
+
+        $wpdb->insert(
+            $this->table,
+            [
+                'post_id'      => $data['class_post_id'],
+                'session_date'       => $data['session_date'],
+                'start_time'         => $data['start_time'],
+                'end_time'           => $data['end_time'],
+                'capacity'           => $data['capacity'],
+                'remaining_capacity' => $data['remaining_capacity'],
+                'status'             => $data['status'],
+                'created_at'         => current_time('mysql'),
+                'updated_at'         => current_time('mysql'),
+            ],
+            [
+                '%d',
+                '%s',
+                '%s',
+                '%s',
+                '%d',
+                '%d',
+                '%s',
+                '%s',
+                '%s',
+            ]
+        );
     }
 
 
@@ -101,6 +137,33 @@ final class ClassSessionRepository
                 $qty
             )
         );
+    }
+
+    public function hasOverlappingSession(
+        int $bookingId,
+        string $date,
+        string $startTime,
+        string $endTime
+    ): bool {
+        global $wpdb;
+
+        $sql = $wpdb->prepare(
+            "
+        SELECT COUNT(*)
+        FROM {$this->table}
+        WHERE post_id = %d
+          AND session_date = %s
+          AND status = 'active'
+          AND start_time < %s
+          AND %s < end_time
+        ",
+            $bookingId,
+            $date,
+            $endTime,
+            $startTime
+        );
+
+        return (int) $wpdb->get_var($sql) > 0;
     }
 
 }

@@ -13,13 +13,18 @@ final class ClassSessionsShortcode
         add_shortcode('class_sessions', [self::class, 'render']);
     }
 
-    public static function render(): string
+    public static function render(array $attrs = []): string
     {
+        $attrs = shortcode_atts([
+                'class_id' => null,
+        ], $attrs);
+
+        $classPostId = (int) $attrs['class_id'];
         $repository = new ClassSessionRepository();
-        $sessions = $repository->findActive();
+        $sessions = $repository->findUpcomingByClass($classPostId);
 
         if (empty($sessions)) {
-            return '<p>No classes available at the moment.</p>';
+            return '<p>No classes are available at the moment.</p>';
         }
 
         ob_start();
@@ -58,29 +63,24 @@ final class ClassSessionsShortcode
                             <?php echo $remainingQuantity; ?>
                         </p>
 
-                        <form method="post" action="<?php echo esc_url(wc_get_cart_url()); ?>">
+                        <form method="post">
                             <input
                                     type="hidden"
                                     name="class_booking_action"
                                     value="reserve"
                             />
-                            <input
-                                    type="hidden"
-                                    name="add-to-cart"
-                                    value="<?php echo (int)$session['product_id']; ?>"
-                            />
 
                             <input
                                     type="hidden"
-                                    name="class_booking_product_id"
-                                    value="<?php echo (int) $session['product_id']; ?>"
+                                    name="class_booking_session_id"
+                                    value="<?php echo (int) $session['id']; ?>"
                             />
 
                             <label>
                                 Persons:
                                 <input
                                         type="number"
-                                        name="quantity"
+                                        name="class_booking_quantity"
                                         min="1"
                                         max="<?php echo $remainingQuantity; ?>"
                                         value="1"

@@ -8,6 +8,9 @@ defined('ABSPATH') || exit;
 
 final class ReserveClassHandler
 {
+
+    private const PRODUCT_ID = 123; // TODO: real ID
+
     public static function handle(): void
     {
         if (
@@ -19,7 +22,7 @@ final class ReserveClassHandler
 
         if (
             !isset(
-                $_POST['class_booking_product_id'],
+                $_POST['class_booking_session_id'],
                 $_POST['class_booking_quantity']
             )
         ) {
@@ -30,57 +33,52 @@ final class ReserveClassHandler
             return;
         }
 
-        $productId = (int) $_POST['class_booking_product_id'];
-        $qtyRequested = (int) $_POST['class_booking_quantity'];
+        $sessionId = (int) $_POST['class_booking_session_id'];
+        $persons   = (int) $_POST['class_booking_quantity'];
 
-        if ($qtyRequested < 1) {
+        if ($persons < 1) {
             wc_add_notice(
-                __('Invalid number of persons selected.', 'class-booking'),
+                __('Invalid number of persons.', 'class-booking'),
                 'error'
             );
-            wp_safe_redirect(wc_get_cart_url());
+            wp_safe_redirect(wc_get_checkout_url());
             exit;
         }
-
 
         $repo = new ClassSessionRepository();
-        $session = $repo->findByProductId($productId);
+        $session = $repo->find($sessionId);
 
-        if (!$session) {
-            wp_safe_redirect(wc_get_cart_url());
-            exit;
-        }
-
-        $remaining = (int) $session['remaining_capacity'];
-
-        $alreadyInCart = 0;
-        foreach (WC()->cart->get_cart() as $item) {
-            if ((int) $item['product_id'] === $productId) {
-                $alreadyInCart = (int) $item['quantity'];
-            }
-        }
-
-        if ($qtyRequested > ($remaining + $alreadyInCart)) {
+        if (!$session || $session['status'] !== 'active') {
             wc_add_notice(
-                __('Not enough available spots for this class.', 'class-booking'),
+                __('This session is no longer available.', 'class-booking'),
                 'error'
             );
-            wp_safe_redirect(wc_get_cart_url());
+            wp_safe_redirect(wc_get_checkout_url());
             exit;
         }
 
-        $cart = WC()->cart;
-        $cartItemKey = $cart->find_product_in_cart(
-            $cart->generate_cart_id($productId)
-        );
-
-        if ($cartItemKey) {
-            $cart->set_quantity($cartItemKey, $qtyRequested);
-        } else {
-            $cart->add_to_cart($productId, $qtyRequested);
+        if ($persons > (int) $session['remaining_capacity']) {
+            wc_add_notice(
+                __('Not enough available spots for this session.', 'class-booking'),
+                'error'
+            );
+            wp_safe_redirect(wc_get_checkout_url());
+            exit;
         }
 
-        // PRG pattern
+        WC()->cart->empty_cart();
+
+        WC()->cart->add_to_cart(
+            self::PRODUCT_ID,
+            1, // sold individually
+            0,
+            [],
+            [
+                'class_booking_session_id' => $sessionId,
+                'class_booking_persons'    => $persons,
+            ]
+        );
+
         wp_safe_redirect(wc_get_checkout_url());
         exit;
     }

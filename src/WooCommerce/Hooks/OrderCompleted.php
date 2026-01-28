@@ -2,7 +2,7 @@
 
 namespace ClassBooking\WooCommerce\Hooks;
 
-use ClassBooking\Infrastructure\Repository\ClassSessionRepository;
+use src\Infrastructure\Repository\ClassSessionRepository;
 
 defined('ABSPATH') || exit;
 

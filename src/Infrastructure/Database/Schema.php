@@ -18,16 +18,11 @@ final class Schema
             CREATE TABLE {$table} (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     post_id BIGINT UNSIGNED NOT NULL,
-    product_id BIGINT UNSIGNED NULL,
 
     capacity INT NOT NULL,
     remaining_capacity INT NOT NULL,
 
-    price DECIMAL(10,2) NOT NULL,
-
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    weekday VARCHAR(10) NOT NULL,
+    session_date DATE NOT NULL,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
 
@@ -37,10 +32,8 @@ final class Schema
     updated_at DATETIME NOT NULL,
 
     PRIMARY KEY (id),
-    UNIQUE KEY post_id (post_id),
-    UNIQUE KEY product_id (product_id)
-) {$charsetCollate};
-        ";
+    UNIQUE (post_id, session_date, start_time, end_time)
+) {$charsetCollate};";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta($sql);
