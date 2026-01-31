@@ -28,11 +28,56 @@
          * Initialize Flatpickr date and time pickers
          */
         initDateTimePickers: function() {
-            console.log('Initializing Flatpickr...');
-            console.log('Flatpickr available:', typeof flatpickr !== 'undefined');
+            // Pickers are initialized when modal opens
+        },
 
-            // Wait for modal to be in DOM before initializing
-            // We'll initialize pickers when modal opens instead
+        /**
+         * Helper: Position calendar inside modal
+         */
+        positionCalendar: function(instance, inputElement) {
+            setTimeout(function() {
+                const calendar = instance.calendarContainer;
+                const modalBody = document.querySelector('.cb-modal-body');
+
+                if (!calendar || !modalBody || !inputElement) return;
+
+                const rect = inputElement.getBoundingClientRect();
+                const modalBodyRect = modalBody.getBoundingClientRect();
+
+                calendar.style.top = (rect.bottom - modalBodyRect.top + 4) + 'px';
+                calendar.style.left = (rect.left - modalBodyRect.left) + 'px';
+            }, 0);
+        },
+
+        /**
+         * Helper: Setup calendar in modal
+         */
+        setupCalendarInModal: function(instance) {
+            const modalBody = document.querySelector('.cb-modal-body');
+            if (!modalBody || !instance.calendarContainer) return;
+
+            modalBody.appendChild(instance.calendarContainer);
+            instance.calendarContainer.style.position = 'absolute';
+            instance.calendarContainer.style.top = '0px';
+            instance.calendarContainer.style.left = '0px';
+            instance.calendarContainer.style.display = 'none';
+        },
+
+        /**
+         * Helper: Hide extra days from next month
+         */
+        hideExtraDays: function(calendar) {
+            const days = calendar.querySelectorAll('.flatpickr-day');
+            const nextMonthDays = Array.from(days).filter(day =>
+                day.classList.contains('nextMonthDay')
+            );
+
+            // Keep only first 6 days of next month (to complete last week)
+            if (nextMonthDays.length > 6) {
+                nextMonthDays.slice(6).forEach(day => {
+                    day.style.display = 'none';
+                });
+            }
         },
 
         /**
@@ -42,20 +87,15 @@
             // Check if already initialized
             const dateInput = document.getElementById('cb-session-date');
             if (dateInput && dateInput._flatpickr) {
-                console.log('Pickers already initialized, skipping...');
                 return; // Already initialized
             }
 
-            console.log('Initializing modal pickers...');
-            console.log('Flatpickr available:', typeof flatpickr);
-            console.log('Date input exists:', !!dateInput);
-            console.log('Start time input exists:', !!document.getElementById('cb-start-time'));
-            console.log('End time input exists:', !!document.getElementById('cb-end-time'));
-
             if (typeof flatpickr === 'undefined') {
-                console.error('Flatpickr is not loaded!');
+                console.error('Flatpickr library not loaded');
                 return;
             }
+
+            const self = this;
 
             // Date picker
             const datePicker = flatpickr('#cb-session-date', {
@@ -68,60 +108,21 @@
                 clickOpens: true,
                 allowInput: true,
                 disableMobile: true,
-                inline: false,
                 onReady: function(selectedDates, dateStr, instance) {
-                    console.log('Date picker ready!');
-                    // Ensure altInput is visible and styled
                     if (instance.altInput) {
                         instance.altInput.style.display = 'block';
                         instance.altInput.style.width = '100%';
+                        instance.altInput.setAttribute('aria-label', 'Seleccionar fecha de sesión');
                     }
-                    // Move calendar to modal-body and position it
-                    const modalBody = document.querySelector('.cb-modal-body');
-                    if (modalBody && instance.calendarContainer) {
-                        modalBody.appendChild(instance.calendarContainer);
-                        // Set initial position and hide it
-                        instance.calendarContainer.style.position = 'absolute';
-                        instance.calendarContainer.style.top = '0px';
-                        instance.calendarContainer.style.left = '0px';
-                        instance.calendarContainer.style.display = 'none';
-                    }
+                    self.setupCalendarInModal(instance);
                 },
                 onOpen: function(selectedDates, dateStr, instance) {
-                    console.log('Date picker opened!');
-                    // Force position after Flatpickr's positioning
-                    setTimeout(function() {
-                        const altInput = instance.altInput;
-                        const calendar = instance.calendarContainer;
-                        if (altInput && calendar) {
-                            const rect = altInput.getBoundingClientRect();
-                            const modalBody = document.querySelector('.cb-modal-body');
-                            const modalBodyRect = modalBody.getBoundingClientRect();
-                            const top = rect.bottom - modalBodyRect.top + 4;
-                            const left = rect.left - modalBodyRect.left;
-                            console.log('Date picker position:', { top, left, rect, modalBodyRect });
-                            calendar.style.top = top + 'px';
-                            calendar.style.left = left + 'px';
-
-                            // Hide extra nextMonthDay elements that are not needed
-                            const days = calendar.querySelectorAll('.flatpickr-day');
-                            const nextMonthDays = Array.from(days).filter(day => day.classList.contains('nextMonthDay'));
-
-                            // If there are more than 6 nextMonthDay elements, hide the extras
-                            if (nextMonthDays.length > 6) {
-                                nextMonthDays.slice(6).forEach(day => {
-                                    day.style.display = 'none';
-                                });
-                            }
-                        }
-                    }, 0);
+                    self.positionCalendar(instance, instance.altInput);
+                    self.hideExtraDays(instance.calendarContainer);
                 }
             });
-            console.log('Date picker instance:', datePicker);
-            console.log('Date picker element:', datePicker.element);
-            console.log('Date picker altInput:', datePicker.altInput);
 
-            // Start time picker (no altInput needed for time)
+            // Start time picker
             const startTimePicker = flatpickr('#cb-start-time', {
                 locale: 'es',
                 enableTime: true,
@@ -133,39 +134,15 @@
                 allowInput: true,
                 disableMobile: true,
                 onReady: function(selectedDates, dateStr, instance) {
-                    console.log('Start time picker ready!');
-                    // Move calendar to modal-body and position it
-                    const modalBody = document.querySelector('.cb-modal-body');
-                    if (modalBody && instance.calendarContainer) {
-                        modalBody.appendChild(instance.calendarContainer);
-                        // Set initial position
-                        instance.calendarContainer.style.position = 'absolute';
-                        instance.calendarContainer.style.top = '0px';
-                        instance.calendarContainer.style.left = '0px';
-                    }
+                    instance.element.setAttribute('aria-label', 'Seleccionar hora de inicio');
+                    self.setupCalendarInModal(instance);
                 },
                 onOpen: function(selectedDates, dateStr, instance) {
-                    console.log('Start time picker opened!');
-                    // Force position after Flatpickr's positioning
-                    setTimeout(function() {
-                        const input = instance.element;
-                        const calendar = instance.calendarContainer;
-                        if (input && calendar) {
-                            const rect = input.getBoundingClientRect();
-                            const modalBody = document.querySelector('.cb-modal-body');
-                            const modalBodyRect = modalBody.getBoundingClientRect();
-                            const top = rect.bottom - modalBodyRect.top + 4;
-                            const left = rect.left - modalBodyRect.left;
-                            console.log('Start time picker position:', { top, left, rect, modalBodyRect });
-                            calendar.style.top = top + 'px';
-                            calendar.style.left = left + 'px';
-                        }
-                    }, 0);
+                    self.positionCalendar(instance, instance.element);
                 }
             });
-            console.log('Start time picker instance:', startTimePicker);
 
-            // End time picker (no altInput needed for time)
+            // End time picker
             const endTimePicker = flatpickr('#cb-end-time', {
                 locale: 'es',
                 enableTime: true,
@@ -177,39 +154,13 @@
                 allowInput: true,
                 disableMobile: true,
                 onReady: function(selectedDates, dateStr, instance) {
-                    console.log('End time picker ready!');
-                    // Move calendar to modal-body and position it
-                    const modalBody = document.querySelector('.cb-modal-body');
-                    if (modalBody && instance.calendarContainer) {
-                        modalBody.appendChild(instance.calendarContainer);
-                        // Set initial position
-                        instance.calendarContainer.style.position = 'absolute';
-                        instance.calendarContainer.style.top = '0px';
-                        instance.calendarContainer.style.left = '0px';
-                    }
+                    instance.element.setAttribute('aria-label', 'Seleccionar hora de fin');
+                    self.setupCalendarInModal(instance);
                 },
                 onOpen: function(selectedDates, dateStr, instance) {
-                    console.log('End time picker opened!');
-                    // Force position after Flatpickr's positioning
-                    setTimeout(function() {
-                        const input = instance.element;
-                        const calendar = instance.calendarContainer;
-                        if (input && calendar) {
-                            const rect = input.getBoundingClientRect();
-                            const modalBody = document.querySelector('.cb-modal-body');
-                            const modalBodyRect = modalBody.getBoundingClientRect();
-                            const top = rect.bottom - modalBodyRect.top + 4;
-                            const left = rect.left - modalBodyRect.left;
-                            console.log('End time picker position:', { top, left, rect, modalBodyRect });
-                            calendar.style.top = top + 'px';
-                            calendar.style.left = left + 'px';
-                        }
-                    }, 0);
+                    self.positionCalendar(instance, instance.element);
                 }
             });
-            console.log('End time picker instance:', endTimePicker);
-
-            console.log('Pickers initialized!');
         },
 
         /**
