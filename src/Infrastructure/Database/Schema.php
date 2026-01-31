@@ -18,6 +18,7 @@ final class Schema
             CREATE TABLE {$table} (
     id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
     post_id BIGINT UNSIGNED NOT NULL,
+    product_id BIGINT UNSIGNED NULL,
 
     capacity INT NOT NULL,
     remaining_capacity INT NOT NULL,
@@ -32,7 +33,8 @@ final class Schema
     updated_at DATETIME NOT NULL,
 
     PRIMARY KEY (id),
-    UNIQUE (post_id, session_date, start_time, end_time)
+    UNIQUE (post_id, session_date, start_time, end_time),
+    KEY product_id (product_id)
 ) {$charsetCollate};";
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';

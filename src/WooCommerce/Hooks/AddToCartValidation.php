@@ -20,19 +20,19 @@ final class AddToCartValidation
 
     public static function validate(
         bool $passed,
-        int $productId,
+        int $id,
         int $quantity = 1
     ): bool
     {
         $repo = new ClassSessionRepository();
-        $session = $repo->findByProductId($productId);
+        $session = $repo->find($id);
 
         if (!$session) {
             return $passed;
         }
 
         $remaining = (int) $session['remaining_capacity'];
-        $alreadyInCart = self::getQuantityInCart($productId);
+        $alreadyInCart = self::getQuantityInCart($id);
 
         if ($quantity + $alreadyInCart > $remaining) {
             wc_add_notice(
@@ -48,7 +48,7 @@ final class AddToCartValidation
         return true;
     }
 
-    private static function getQuantityInCart(int $productId): int
+    private static function getQuantityInCart(int $id): int
     {
         if (!WC()->session) {
             return 0;
@@ -63,7 +63,7 @@ final class AddToCartValidation
         $qty = 0;
 
         foreach ($cart as $item) {
-            if ((int) $item['product_id'] === $productId) {
+            if ((int) $item['id'] === $id) {
                 $qty += (int) $item['quantity'];
             }
         }

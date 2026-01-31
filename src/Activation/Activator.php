@@ -2,7 +2,7 @@
 
 namespace ClassBooking\Activation;
 
-use src\Infrastructure\Database\Schema;
+use ClassBooking\Infrastructure\Database\Schema;
 
 defined('ABSPATH') || exit;
 

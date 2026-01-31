@@ -36,7 +36,7 @@ final class ClassSessionsShortcode
 
                 if (WC()->cart) {
                     foreach (WC()->cart->get_cart() as $item) {
-                        if ((int)$item['product_id'] === (int)$session['product_id']) {
+                        if ((int)$item['id'] === (int)$session['id']) {
                             $currentQty = (int)$item['quantity'];
                         }
                     }
