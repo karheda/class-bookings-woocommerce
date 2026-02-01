@@ -2,6 +2,8 @@
 
 namespace ClassBooking\Admin\Notice;
 
+defined('ABSPATH') || exit;
+
 final class BookingAdminNotices
 {
 
