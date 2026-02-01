@@ -313,4 +313,37 @@
     // Expose to global scope
     window.ClassBookingCalendar = ClassBookingCalendar;
 
+    /**
+     * Booking List Accordion
+     */
+    $(document).ready(function() {
+        // Handle accordion toggle
+        $('.cb-booking-list').on('click keypress', '.cb-card-header', function(e) {
+            // Handle keyboard (Enter or Space)
+            if (e.type === 'keypress' && e.which !== 13 && e.which !== 32) {
+                return;
+            }
+
+            e.preventDefault();
+
+            const $card = $(this).closest('.cb-booking-card');
+            const $content = $card.find('.cb-card-content');
+            const isOpen = $card.hasClass('is-open');
+
+            // Close other open cards (optional - remove for multi-open)
+            // $('.cb-booking-card.is-open').not($card).removeClass('is-open')
+            //     .find('.cb-card-header').attr('aria-expanded', 'false');
+
+            // Toggle current card
+            $card.toggleClass('is-open');
+            $(this).attr('aria-expanded', !isOpen);
+
+            // Initialize calendar if first time opening
+            if (!isOpen && !$card.data('calendar-initialized')) {
+                $card.data('calendar-initialized', true);
+                // Calendar will be initialized via inline script
+            }
+        });
+    });
+
 })(jQuery);

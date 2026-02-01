@@ -482,3 +482,171 @@
     }
 }
 
+/* ========================================
+   Booking List - Cards Grid
+   ======================================== */
+.cb-booking-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cb-booking-card {
+    background: var(--cb-bg);
+    border: 1px solid var(--cb-border);
+    border-radius: var(--cb-radius);
+    overflow: hidden;
+    transition: var(--cb-transition);
+}
+
+.cb-booking-card:hover {
+    box-shadow: var(--cb-shadow);
+}
+
+/* Card Header (Clickable) */
+.cb-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    cursor: pointer;
+    transition: var(--cb-transition);
+}
+
+.cb-card-header:hover {
+    background: var(--cb-bg-hover);
+}
+
+.cb-card-header:focus {
+    outline: 2px solid var(--cb-primary);
+    outline-offset: -2px;
+}
+
+/* Card Image */
+.cb-card-image {
+    flex: 0 0 120px;
+    height: 90px;
+    border-radius: var(--cb-radius);
+    overflow: hidden;
+}
+
+.cb-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Card Info */
+.cb-card-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cb-card-title {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--cb-text);
+}
+
+.cb-card-excerpt {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: var(--cb-text-muted);
+    line-height: 1.4;
+}
+
+.cb-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cb-card-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cb-primary);
+}
+
+.cb-card-status {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+
+.cb-card-status.cb-no-availability {
+    background: #fef1f1;
+    color: var(--cb-error);
+}
+
+/* Toggle Icon */
+.cb-card-toggle {
+    flex: 0 0 auto;
+    padding: 8px;
+}
+
+.cb-toggle-icon {
+    transition: transform 0.3s ease;
+    color: var(--cb-text-muted);
+}
+
+.cb-booking-card.is-open .cb-toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Card Content (Accordion) */
+.cb-card-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease;
+    border-top: 0 solid var(--cb-border);
+}
+
+.cb-booking-card.is-open .cb-card-content {
+    max-height: 1200px;
+    border-top-width: 1px;
+}
+
+/* Accordion Widget Adjustments */
+.cb-accordion-widget {
+    border: none;
+    border-radius: 0;
+}
+
+.cb-accordion-widget .cb-booking-body {
+    padding: 16px;
+}
+
+/* ========================================
+   Booking List - Responsive
+   ======================================== */
+@media (max-width: 600px) {
+    .cb-card-header {
+        flex-wrap: wrap;
+    }
+
+    .cb-card-image {
+        flex: 0 0 80px;
+        height: 60px;
+    }
+
+    .cb-card-info {
+        flex: 1 1 calc(100% - 130px);
+    }
+
+    .cb-card-toggle {
+        flex: 0 0 100%;
+        text-align: center;
+        padding: 8px 0 0 0;
+        border-top: 1px solid var(--cb-border);
+        margin-top: 12px;
+    }
+
+    .cb-card-title {
+        font-size: 16px;
+    }
+
+    .cb-card-excerpt {
+        display: none;
+    }
+}

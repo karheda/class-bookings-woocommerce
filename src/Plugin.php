@@ -8,8 +8,10 @@ use ClassBooking\Admin\Metabox\BookingSessionsMetabox;
 use ClassBooking\Admin\Notice\BookingAdminNotices;
 use ClassBooking\Admin\PostType\BookingPostType;
 use ClassBooking\Admin\Rest\SessionsRestController;
+use ClassBooking\Admin\Taxonomy\BookingCategoryTaxonomy;
 use ClassBooking\Front\Ajax\GetSessionsByDateHandler;
 use ClassBooking\Front\Handler\ReserveClassHandler;
+use ClassBooking\Front\Shortcode\BookingListShortcode;
 use ClassBooking\Front\Shortcode\ClassSessionsShortcode;
 use ClassBooking\Infrastructure\Database\Migration;
 use ClassBooking\WooCommerce\Hooks\AddToCartValidation;
@@ -27,6 +29,7 @@ final class Plugin
         add_action('plugins_loaded', [Migration::class, 'run']);
 
         add_action('init', [BookingPostType::class, 'register']);
+        add_action('init', [BookingCategoryTaxonomy::class, 'register']);
         add_action('template_redirect', [ReserveClassHandler::class, 'handle']);
         add_action('save_post_booking', [AddBookingSessionHandler::class, 'handle'], 10, 3);
         add_action('admin_notices', [BookingAdminNotices::class, 'display']);
@@ -60,6 +63,7 @@ final class Plugin
         });
 
         ClassSessionsShortcode::register();
+        BookingListShortcode::register();
         GetSessionsByDateHandler::register();
         AddToCartValidation::register();
         OrderCompleted::register();
