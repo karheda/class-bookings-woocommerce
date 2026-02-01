@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Class Booking
  * Description: Custom booking system for classes with capacity control.
- * Version: 0.2.0
+ * Version: 0.3.0
  * Author: Carlos Hernández
  * Text Domain: class-booking
  */
@@ -11,7 +11,7 @@ defined('ABSPATH') || exit;
 
 define('CLASS_BOOKING_PATH', plugin_dir_path(__FILE__));
 define('CLASS_BOOKING_URL', plugin_dir_url(__FILE__));
-define('CLASS_BOOKING_VERSION', '0.2.0');
+define('CLASS_BOOKING_VERSION', '0.3.0');
 
 require_once CLASS_BOOKING_PATH . 'vendor/autoload.php';
 
