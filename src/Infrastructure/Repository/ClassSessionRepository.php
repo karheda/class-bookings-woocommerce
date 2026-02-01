@@ -235,4 +235,59 @@ final class ClassSessionRepository
         return $result !== false;
     }
 
+    /**
+     * Get dates with available sessions for a class (for calendar)
+     *
+     * @param int $classPostId Class post ID
+     * @return array Array of dates with session count
+     */
+    public function getAvailableDates(int $classPostId): array
+    {
+        global $wpdb;
+
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT
+                    session_date,
+                    COUNT(*) as session_count,
+                    SUM(remaining_capacity) as total_capacity
+                 FROM {$this->table}
+                 WHERE post_id = %d
+                   AND status = 'active'
+                   AND session_date >= CURDATE()
+                   AND remaining_capacity > 0
+                 GROUP BY session_date
+                 ORDER BY session_date",
+                $classPostId
+            ),
+            ARRAY_A
+        );
+    }
+
+    /**
+     * Get sessions for a specific date
+     *
+     * @param int $classPostId Class post ID
+     * @param string $date Date in Y-m-d format
+     * @return array Array of sessions
+     */
+    public function getSessionsByDate(int $classPostId, string $date): array
+    {
+        global $wpdb;
+
+        return $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT *
+                 FROM {$this->table}
+                 WHERE post_id = %d
+                   AND session_date = %s
+                   AND status = 'active'
+                 ORDER BY start_time",
+                $classPostId,
+                $date
+            ),
+            ARRAY_A
+        );
+    }
+
 }

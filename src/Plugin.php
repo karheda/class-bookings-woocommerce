@@ -8,6 +8,7 @@ use ClassBooking\Admin\Metabox\BookingSessionsMetabox;
 use ClassBooking\Admin\Notice\BookingAdminNotices;
 use ClassBooking\Admin\PostType\BookingPostType;
 use ClassBooking\Admin\Rest\SessionsRestController;
+use ClassBooking\Front\Ajax\GetSessionsByDateHandler;
 use ClassBooking\Front\Handler\ReserveClassHandler;
 use ClassBooking\Front\Shortcode\ClassSessionsShortcode;
 use ClassBooking\Infrastructure\Database\Migration;
@@ -59,6 +60,7 @@ final class Plugin
         });
 
         ClassSessionsShortcode::register();
+        GetSessionsByDateHandler::register();
         AddToCartValidation::register();
         OrderCompleted::register();
         DisableCartQuantity::register();
