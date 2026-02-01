@@ -3,7 +3,7 @@
  * Plugin Name: Class Booking
  * Description: Custom booking system for classes with capacity control.
  * Version: 0.2.0
- * Author: Your Name
+ * Author: Carlos Hernández
  * Text Domain: class-booking
  */
 
