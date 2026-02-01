@@ -35,12 +35,13 @@
          * Helper: Position calendar inside modal
          */
         positionCalendar: function(instance, inputElement) {
+            const calendar = instance.calendarContainer;
+            const modalBody = document.querySelector('.cb-modal-body');
+
+            if (!calendar || !modalBody || !inputElement) return;
+
+            // Use setTimeout to override Flatpickr's automatic positioning
             setTimeout(function() {
-                const calendar = instance.calendarContainer;
-                const modalBody = document.querySelector('.cb-modal-body');
-
-                if (!calendar || !modalBody || !inputElement) return;
-
                 const rect = inputElement.getBoundingClientRect();
                 const modalBodyRect = modalBody.getBoundingClientRect();
 
@@ -74,7 +75,7 @@
 
             // Keep only first 6 days of next month (to complete last week)
             if (nextMonthDays.length > 6) {
-                nextMonthDays.slice(6).forEach(day => {
+                nextMonthDays.slice(7).forEach(day => {
                     day.style.display = 'none';
                 });
             }
@@ -99,10 +100,9 @@
 
             // Date picker
             const datePicker = flatpickr('#cb-session-date', {
-                locale: 'es',
                 dateFormat: 'Y-m-d',
                 altInput: true,
-                altFormat: 'j F, Y',
+                altFormat: 'F j, Y',
                 altInputClass: 'cb-datepicker',
                 minDate: 'today',
                 clickOpens: true,
@@ -112,7 +112,7 @@
                     if (instance.altInput) {
                         instance.altInput.style.display = 'block';
                         instance.altInput.style.width = '100%';
-                        instance.altInput.setAttribute('aria-label', 'Seleccionar fecha de sesión');
+                        instance.altInput.setAttribute('aria-label', 'Select session date');
                     }
                     self.setupCalendarInModal(instance);
                 },
@@ -124,7 +124,6 @@
 
             // Start time picker
             const startTimePicker = flatpickr('#cb-start-time', {
-                locale: 'es',
                 enableTime: true,
                 noCalendar: true,
                 dateFormat: 'H:i',
@@ -134,7 +133,7 @@
                 allowInput: true,
                 disableMobile: true,
                 onReady: function(selectedDates, dateStr, instance) {
-                    instance.element.setAttribute('aria-label', 'Seleccionar hora de inicio');
+                    instance.element.setAttribute('aria-label', 'Select start time');
                     self.setupCalendarInModal(instance);
                 },
                 onOpen: function(selectedDates, dateStr, instance) {
@@ -144,7 +143,6 @@
 
             // End time picker
             const endTimePicker = flatpickr('#cb-end-time', {
-                locale: 'es',
                 enableTime: true,
                 noCalendar: true,
                 dateFormat: 'H:i',
@@ -154,7 +152,7 @@
                 allowInput: true,
                 disableMobile: true,
                 onReady: function(selectedDates, dateStr, instance) {
-                    instance.element.setAttribute('aria-label', 'Seleccionar hora de fin');
+                    instance.element.setAttribute('aria-label', 'Select end time');
                     self.setupCalendarInModal(instance);
                 },
                 onOpen: function(selectedDates, dateStr, instance) {

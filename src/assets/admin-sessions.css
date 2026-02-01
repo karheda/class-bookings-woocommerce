@@ -230,18 +230,6 @@ input.flatpickr-input[type="hidden"] {
 .flatpickr-calendar.open {
     display: block !important;
     opacity: 1 !important;
-    animation: fpFadeIn 0.2s ease;
-}
-
-@keyframes fpFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-4px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
 
 /* ========================================
@@ -254,6 +242,13 @@ input.flatpickr-input[type="hidden"] {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
     background: #fff !important;
     overflow: hidden !important;
+    width: 280px !important;
+}
+
+/* Make time picker more compact */
+.flatpickr-calendar.noCalendar {
+    width: auto !important;
+    min-width: 160px !important;
 }
 
 /* ========================================
@@ -262,8 +257,7 @@ input.flatpickr-input[type="hidden"] {
 .flatpickr-months {
     background: #fff !important;
     border-bottom: 1px solid var(--fp-border-color) !important;
-    padding: 12px 0 !important;
-    align-items: center !important;
+    padding: 8px 0 !important;
 }
 
 .flatpickr-month {
@@ -273,7 +267,6 @@ input.flatpickr-input[type="hidden"] {
     display: flex !important;
     flex-direction: column !important;
     justify-content: center !important;
-    height: auto !important;
 }
 
 .flatpickr-current-month {
@@ -281,9 +274,6 @@ input.flatpickr-input[type="hidden"] {
     font-weight: 600 !important;
     color: var(--fp-text-color) !important;
     padding: 7px 0 !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
 }
 
 .flatpickr-current-month .flatpickr-monthDropdown-months {
@@ -357,30 +347,30 @@ input.flatpickr-input[type="hidden"] {
 .flatpickr-weekdays {
     background: var(--fp-bg-weekdays) !important;
     border-bottom: 1px solid var(--fp-border-color) !important;
-    padding: 8px 0 !important;
+    padding: 4px 0 !important;
 }
 
 .flatpickr-weekday {
     color: var(--fp-text-muted) !important;
     font-weight: 600 !important;
-    font-size: 11px !important;
+    font-size: 10px !important;
     text-transform: uppercase !important;
-    letter-spacing: 0.5px !important;
+    letter-spacing: 0.3px !important;
 }
 
 /* ========================================
    Flatpickr Days Container
    ======================================== */
 .flatpickr-days {
-    width: 100% !important;
+    width: 280px !important;
     padding: 0 !important;
 }
 
 .dayContainer {
-    width: 100% !important;
-    min-width: 100% !important;
-    max-width: 100% !important;
-    padding: 8px !important;
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    padding: 4px 8px !important;
 }
 
 /* ========================================
@@ -391,10 +381,13 @@ input.flatpickr-input[type="hidden"] {
     border: 2px solid transparent !important;
     border-radius: 50% !important;
     font-weight: 400 !important;
-    line-height: 36px !important;
-    height: 38px !important;
-    max-width: 38px !important;
-    margin: 2px !important;
+    line-height: 32px !important;
+    height: 34px !important;
+    width: 34px !important;
+    max-width: 34px !important;
+    flex-basis: 34px !important;
+    margin: 1px !important;
+    font-size: 13px !important;
     transition: var(--fp-transition) !important;
     cursor: pointer !important;
 }
@@ -459,22 +452,31 @@ input.flatpickr-input[type="hidden"] {
 .flatpickr-time {
     border-top: 1px solid var(--fp-border-color) !important;
     background: #fff !important;
-    padding: 12px !important;
+    padding: 10px 12px 15px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
+    gap: 0 !important;
+    max-height: 50px !important;
+}
+
+.flatpickr-time .numInputWrapper {
+    width: 55px !important;
+    height: 36px !important;
+    flex: 0 0 45px !important;
 }
 
 .flatpickr-time input {
     color: var(--fp-text-color) !important;
-    font-size: 18px !important;
+    font-size: 16px !important;
     font-weight: 600 !important;
     border: 1px solid var(--fp-border-color) !important;
     border-radius: 4px !important;
-    padding: 8px 12px !important;
+    padding: 0 !important;
     transition: var(--fp-transition) !important;
     text-align: center !important;
-    min-width: 60px !important;
+    width: 55px !important;
+    height: 36px !important;
 }
 
 .flatpickr-time input:hover {
@@ -490,18 +492,24 @@ input.flatpickr-input[type="hidden"] {
 }
 
 .flatpickr-time .flatpickr-time-separator {
-    color: var(--fp-text-muted) !important;
-    font-weight: 600 !important;
+    color: var(--fp-text-color) !important;
+    font-weight: 700 !important;
     font-size: 18px !important;
-    margin: 0 4px !important;
+    width: 12px !important;
+    flex: 0 0 12px !important;
+    text-align: center !important;
+    line-height: 36px !important;
 }
 
 .flatpickr-time .flatpickr-am-pm {
     color: var(--fp-text-color) !important;
     font-weight: 600 !important;
+    font-size: 12px !important;
     border: 1px solid var(--fp-border-color) !important;
     border-radius: 4px !important;
-    padding: 8px 12px !important;
+    width: 40px !important;
+    height: 36px !important;
+    margin-left: 8px !important;
     transition: var(--fp-transition) !important;
 }
 
@@ -517,16 +525,48 @@ input.flatpickr-input[type="hidden"] {
 }
 
 /* Time picker increment/decrement arrows */
+.flatpickr-time .numInputWrapper {
+    position: relative !important;
+}
+
 .flatpickr-time .numInputWrapper span {
+    position: absolute !important;
+    right: 0 !important;
+    width: 16px !important;
+    height: 10px !important;
     border: none !important;
     background: transparent !important;
+    opacity: 0 !important;
+    padding: 0 !important;
+    line-height: 16px !important;
+    transition: opacity 0.15s ease !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowUp {
+    top: 10px !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowDown {
+    bottom: 2px !important;
+    top: auto !important;
+}
+
+.flatpickr-time .numInputWrapper:hover span {
     opacity: 0.6 !important;
-    transition: var(--fp-transition) !important;
 }
 
 .flatpickr-time .numInputWrapper span:hover {
     opacity: 1 !important;
     background: var(--fp-bg-hover) !important;
+    border-radius: 2px !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowUp:after,
+.flatpickr-time .numInputWrapper span.arrowDown:after {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border-width: 4px !important;
 }
 
 .flatpickr-time .numInputWrapper span.arrowUp:after {
