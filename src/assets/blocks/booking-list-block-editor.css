@@ -1,0 +1,78 @@
+/* Booking List Block - Editor Styles */
+
+.cb-booking-list-editor {
+    padding: 0;
+}
+
+.cb-block-preview {
+    background: var(--cb-secondary-color, #f0f0f1);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.cb-block-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cb-block-icon {
+    font-size: 24px;
+    color: var(--cb-primary-color, #2271b1);
+}
+
+.cb-block-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--cb-text-color, #1d2327);
+}
+
+.cb-block-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.cb-block-category {
+    font-size: 14px;
+    color: var(--cb-text-color, #1d2327);
+}
+
+.cb-block-color-preview {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.cb-color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    cursor: help;
+}
+
+.cb-block-placeholder {
+    color: #757575;
+    font-style: italic;
+    margin: 0;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Inspector Controls Enhancements */
+.components-panel__body .components-base-control {
+    margin-bottom: 16px;
+}
+
+.components-panel__body .components-color-picker {
+    width: 100%;
+}
+

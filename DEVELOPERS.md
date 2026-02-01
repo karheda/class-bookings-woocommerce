@@ -104,6 +104,8 @@ src/
 │   │   └── SessionsRestController.php
 │   └── Taxonomy/         # Custom taxonomies
 │       └── BookingCategoryTaxonomy.php
+├── Blocks/               # Gutenberg blocks
+│   └── BookingListBlock.php
 ├── Domain/               # Business logic
 │   └── Service/
 │       ├── ClassSessionSyncService.php
@@ -136,6 +138,9 @@ src/
     ├── admin-booking.js
     ├── admin-sessions.css
     ├── admin-sessions.js
+    ├── blocks/           # Gutenberg block assets
+    │   ├── booking-list-block.js
+    │   └── booking-list-block-editor.css
     ├── frontend-calendar.css
     └── frontend-calendar.js
 ```
@@ -208,6 +213,31 @@ Displays accordion list of classes by category.
 | **Class Booking Calendar** | Calendar for a single booking |
 | **Booking List** | Category-based list with accordions |
 
+## Gutenberg Blocks
+
+### Booking List Block
+
+Block name: `class-booking/booking-list`
+
+| Attribute | Type | Default | Description |
+|-----------|------|---------|-------------|
+| `category` | string | `''` | Booking category slug |
+| `primaryColor` | string | `#2271b1` | Buttons and active states |
+| `secondaryColor` | string | `#f0f0f1` | Backgrounds and borders |
+| `textColor` | string | `#1d2327` | Main text color |
+| `accentColor` | string | `#d63638` | Highlights and prices |
+
+**Features:**
+- Category selector in sidebar
+- Four color pickers for customization
+- Server-side rendering with CSS variables
+- Responsive accordion layout
+
+**Files:**
+- `src/Blocks/BookingListBlock.php` - Block registration and render
+- `src/assets/blocks/booking-list-block.js` - Editor component
+- `src/assets/blocks/booking-list-block-editor.css` - Editor styles
+
 ## Post Meta Keys
 
 | Key | Description |
@@ -244,7 +274,8 @@ vendor/bin/phpunit --testsuite Integration
 | AddToCartValidation | 7 |
 | SessionsRestController | 11 |
 | DisableCartQuantity | 4 |
-| **Total** | **42** |
+| BookingListBlock | 8 |
+| **Total** | **50** |
 
 ## Security
 
