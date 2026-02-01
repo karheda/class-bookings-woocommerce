@@ -28,7 +28,12 @@ final class ReserveClassHandler
         $persons = isset($_POST['class_booking_quantity']) ? (int) $_POST['class_booking_quantity'] : 1;
 
         if (!$sessionId) {
-            return;
+            wc_add_notice(
+                __('Please select a session before booking.', 'class-booking'),
+                'error'
+            );
+            wp_safe_redirect(wp_get_referer() ?: home_url());
+            exit;
         }
 
         // Verify nonce if present (new form)
@@ -43,8 +48,13 @@ final class ReserveClassHandler
             }
         }
 
-        if (!WC()->cart) {
-            return;
+        if (!function_exists('WC') || !WC()->cart) {
+            wc_add_notice(
+                __('WooCommerce is not available. Please try again.', 'class-booking'),
+                'error'
+            );
+            wp_safe_redirect(wp_get_referer() ?: home_url());
+            exit;
         }
 
         if ($persons < 1) {

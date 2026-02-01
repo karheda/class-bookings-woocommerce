@@ -92,6 +92,16 @@
                 $(this).val(self.config.quantity);
                 self.updateSummary();
             });
+
+            // Form submission validation
+            this.cache.$bookingForm.on('submit', function(e) {
+                if (!self.config.selectedSession) {
+                    e.preventDefault();
+                    alert('Please select a session before booking.');
+                    return false;
+                }
+                return true;
+            });
         },
 
         /**

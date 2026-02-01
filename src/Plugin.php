@@ -27,7 +27,7 @@ final class Plugin
         add_action('plugins_loaded', [Migration::class, 'run']);
 
         add_action('init', [BookingPostType::class, 'register']);
-        add_action('init', [ReserveClassHandler::class, 'handle']);
+        add_action('template_redirect', [ReserveClassHandler::class, 'handle']);
         add_action('save_post_booking', [AddBookingSessionHandler::class, 'handle'], 10, 3);
         add_action('admin_notices', [BookingAdminNotices::class, 'display']);
 

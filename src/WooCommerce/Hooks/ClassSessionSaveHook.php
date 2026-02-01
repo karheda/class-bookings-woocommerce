@@ -3,6 +3,7 @@
 namespace ClassBooking\WooCommerce\Hooks;
 
 use ClassBooking\Domain\Service\ClassSessionSyncService;
+use ClassBooking\Domain\Service\WooCommerceProductSyncService;
 use ClassBooking\Infrastructure\Repository\ClassSessionRepository;
 use WP_Post;
 
@@ -12,7 +13,7 @@ final class ClassSessionSaveHook
 {
     public static function register(): void
     {
-        add_action('save_post_class_session', [self::class, 'handle'], 20, 2);
+        add_action('save_post_booking', [self::class, 'handle'], 20, 2);
     }
 
     public static function handle(int $postId, WP_Post $post): void
@@ -21,10 +22,14 @@ final class ClassSessionSaveHook
             return;
         }
 
-        $service = new ClassSessionSyncService(
+        // Sync class session data to custom table
+        $sessionService = new ClassSessionSyncService(
             new ClassSessionRepository()
         );
+        $sessionService->syncFromPost($post);
 
-        $service->syncFromPost($post);
+        // Sync/create WooCommerce product for this booking
+        $productService = new WooCommerceProductSyncService();
+        $productService->syncFromClassSession($post);
     }
 }
