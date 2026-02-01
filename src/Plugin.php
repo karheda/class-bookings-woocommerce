@@ -69,9 +69,10 @@ final class Plugin
         OrderCompleted::register();
         DisableCartQuantity::register();
 
-        // Register Elementor widget
+        // Register Elementor widgets
         add_action('elementor/widgets/register', function ($widgets_manager) {
             $widgets_manager->register(new \ClassBooking\Elementor\ClassBookingWidget());
+            $widgets_manager->register(new \ClassBooking\Elementor\BookingListWidget());
         });
 
         add_action('admin_enqueue_scripts', function ($hook) {
