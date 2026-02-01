@@ -290,27 +290,43 @@ final class SessionsRestController extends WP_REST_Controller
         $data = [];
 
         if (isset($request['post_id'])) {
-            $data['post_id'] = (int) $request['post_id'];
+            $data['post_id'] = absint($request['post_id']);
         }
 
         if (isset($request['session_date'])) {
-            $data['session_date'] = sanitize_text_field($request['session_date']);
+            $date = sanitize_text_field($request['session_date']);
+            // Validate date format
+            if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $date)) {
+                $data['session_date'] = $date;
+            }
         }
 
         if (isset($request['start_time'])) {
-            $data['start_time'] = sanitize_text_field($request['start_time']);
+            $time = sanitize_text_field($request['start_time']);
+            // Validate time format (HH:MM or HH:MM:SS)
+            if (preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $time)) {
+                $data['start_time'] = $time;
+            }
         }
 
         if (isset($request['end_time'])) {
-            $data['end_time'] = sanitize_text_field($request['end_time']);
+            $time = sanitize_text_field($request['end_time']);
+            // Validate time format (HH:MM or HH:MM:SS)
+            if (preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $time)) {
+                $data['end_time'] = $time;
+            }
         }
 
         if (isset($request['capacity'])) {
-            $data['capacity'] = (int) $request['capacity'];
+            $data['capacity'] = max(1, absint($request['capacity']));
         }
 
         if (isset($request['status'])) {
-            $data['status'] = sanitize_text_field($request['status']);
+            $status = sanitize_text_field($request['status']);
+            // Only allow valid statuses
+            if (in_array($status, ['active', 'inactive'], true)) {
+                $data['status'] = $status;
+            }
         }
 
         return $data;

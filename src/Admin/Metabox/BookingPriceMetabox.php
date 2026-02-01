@@ -53,10 +53,19 @@ final class BookingPriceMetabox
 
     public static function save(int $postId, \WP_Post $post): void
     {
+        // Verify nonce
         if (
             !isset($_POST['booking_price_nonce']) ||
-            !wp_verify_nonce($_POST['booking_price_nonce'], 'booking_price_save')
+            !wp_verify_nonce(
+                sanitize_text_field(wp_unslash($_POST['booking_price_nonce'])),
+                'booking_price_save'
+            )
         ) {
+            return;
+        }
+
+        // Check user capability
+        if (!current_user_can('edit_post', $postId)) {
             return;
         }
 
@@ -72,10 +81,14 @@ final class BookingPriceMetabox
             return;
         }
 
-        update_post_meta(
-            $postId,
-            '_price',
-            (float) $_POST['booking_price']
+        // Sanitize price - ensure it's a positive float
+        $price = filter_var(
+            wp_unslash($_POST['booking_price']),
+            FILTER_SANITIZE_NUMBER_FLOAT,
+            FILTER_FLAG_ALLOW_FRACTION
         );
+        $price = max(0, (float) $price);
+
+        update_post_meta($postId, '_price', $price);
     }
 }

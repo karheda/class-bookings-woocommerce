@@ -10,6 +10,7 @@ final class ReserveClassHandler
 {
     public static function handle(): void
     {
+        // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified below
         if (
             !isset($_POST['class_booking_action']) ||
             $_POST['class_booking_action'] !== 'reserve'
@@ -17,15 +18,31 @@ final class ReserveClassHandler
             return;
         }
 
+        // Verify nonce - REQUIRED for security
+        if (
+            !isset($_POST['cb_reserve_nonce']) ||
+            !wp_verify_nonce(
+                sanitize_text_field(wp_unslash($_POST['cb_reserve_nonce'])),
+                'cb_reserve_session'
+            )
+        ) {
+            wc_add_notice(
+                __('Security check failed. Please try again.', 'class-booking'),
+                'error'
+            );
+            wp_safe_redirect(wp_get_referer() ?: home_url());
+            exit;
+        }
+
         // Check for session_id (new form) or class_booking_session_id (legacy)
         $sessionId = 0;
         if (isset($_POST['session_id'])) {
-            $sessionId = (int) $_POST['session_id'];
+            $sessionId = absint($_POST['session_id']);
         } elseif (isset($_POST['class_booking_session_id'])) {
-            $sessionId = (int) $_POST['class_booking_session_id'];
+            $sessionId = absint($_POST['class_booking_session_id']);
         }
 
-        $persons = isset($_POST['class_booking_quantity']) ? (int) $_POST['class_booking_quantity'] : 1;
+        $persons = isset($_POST['class_booking_quantity']) ? absint($_POST['class_booking_quantity']) : 1;
 
         if (!$sessionId) {
             wc_add_notice(
@@ -34,18 +51,6 @@ final class ReserveClassHandler
             );
             wp_safe_redirect(wp_get_referer() ?: home_url());
             exit;
-        }
-
-        // Verify nonce if present (new form)
-        if (isset($_POST['cb_reserve_nonce'])) {
-            if (!wp_verify_nonce($_POST['cb_reserve_nonce'], 'cb_reserve_session')) {
-                wc_add_notice(
-                    __('Security check failed. Please try again.', 'class-booking'),
-                    'error'
-                );
-                wp_safe_redirect(wp_get_referer() ?: home_url());
-                exit;
-            }
         }
 
         if (!function_exists('WC') || !WC()->cart) {
