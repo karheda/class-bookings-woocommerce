@@ -101,10 +101,16 @@ if [ "$SKIP_TESTS" = false ]; then
         exit 1
     }
 
-    # Extract test summary
-    TEST_SUMMARY=$(echo "$TEST_OUTPUT" | grep -E "^OK \(" || echo "")
+    # Extract test summary - PHPUnit 10 shows "OK, but there were issues!" for notices
+    TEST_SUMMARY=$(echo "$TEST_OUTPUT" | grep -E "^OK" || echo "")
     if [ -n "$TEST_SUMMARY" ]; then
-        echo -e "${GREEN}✓${NC} $TEST_SUMMARY"
+        # Extract test count from output
+        TEST_COUNT=$(echo "$TEST_OUTPUT" | grep -E "^Tests:" | head -1 || echo "")
+        if [ -n "$TEST_COUNT" ]; then
+            echo -e "${GREEN}✓${NC} $TEST_COUNT"
+        else
+            echo -e "${GREEN}✓${NC} All tests passed"
+        fi
     else
         echo -e "${RED}✗ Could not verify test results${NC}"
         echo "$TEST_OUTPUT"
@@ -147,9 +153,9 @@ if [ "$SKIP_SECURITY" = false ]; then
         echo -e "${GREEN}  ✓${NC} No obvious unsanitized input found"
     fi
 
-    # Check 3: Verify nonce usage in form handlers (exclude shortcodes - they're not handlers)
+    # Check 3: Verify nonce usage in form handlers (exclude shortcodes and blocks - they're not handlers)
     echo "  → Checking nonce verification..."
-    HANDLERS_WITHOUT_NONCE=$(grep -rln "class_booking_action\|wp_ajax_" "${PLUGIN_DIR}/src" --include="*.php" | grep -v "Shortcode" | while read file; do
+    HANDLERS_WITHOUT_NONCE=$(grep -rln "class_booking_action\|wp_ajax_" "${PLUGIN_DIR}/src" --include="*.php" | grep -v "Shortcode\|Block" | while read file; do
         if ! grep -q "wp_verify_nonce" "$file"; then
             echo "$file"
         fi
