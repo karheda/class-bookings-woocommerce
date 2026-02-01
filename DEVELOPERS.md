@@ -44,12 +44,47 @@ vendor/bin/phpunit --testdox
 
 ### Build & Distribution
 
+The build script runs tests and security checks before generating the release ZIP.
+
 ```bash
-# Generate installable ZIP
+# Full build (recommended)
 ./build.sh
 
-# Output: dist/class-booking-{version}.zip
+# Skip tests (not recommended)
+./build.sh --skip-tests
+
+# Skip security checks
+./build.sh --skip-security
+
+# Show help
+./build.sh --help
 ```
+
+**Output**: `dist/class-booking-{version}.zip`
+
+#### Build Steps
+
+| Step | Description | Blocking |
+|------|-------------|----------|
+| 1/6 | Check Docker container is running | ✓ |
+| 2/6 | Run PHPUnit tests | ✓ |
+| 3/6 | Security checks | ✓ |
+| 4/6 | Prepare build directory | - |
+| 5/6 | Copy files & install dependencies | - |
+| 6/6 | Create ZIP archive | - |
+
+#### Security Checks
+
+| Check | Description | Blocking |
+|-------|-------------|----------|
+| ABSPATH | All PHP files have `defined('ABSPATH') \|\| exit;` | ✓ |
+| Input sanitization | Detects `$_GET/$_POST` without sanitization | ⚠ Warning |
+| Nonce verification | Form handlers verify nonces | ✓ |
+| REST permissions | All endpoints have `permission_callback` | ✓ |
+| SQL injection | Detects queries without `prepare()` | ⚠ Warning |
+| PHP syntax | No syntax errors in PHP files | ✓ |
+
+**Note**: Warnings (⚠) are displayed but don't block the build. Blocking checks (✓) will abort the build if they fail.
 
 ## Architecture
 
