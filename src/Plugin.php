@@ -9,6 +9,7 @@ use ClassBooking\Admin\Notice\BookingAdminNotices;
 use ClassBooking\Admin\PostType\BookingPostType;
 use ClassBooking\Admin\Rest\SessionsRestController;
 use ClassBooking\Admin\Taxonomy\BookingCategoryTaxonomy;
+use ClassBooking\Blocks\BookingListBlock;
 use ClassBooking\Front\Ajax\GetSessionsByDateHandler;
 use ClassBooking\Front\Handler\ReserveClassHandler;
 use ClassBooking\Front\Shortcode\BookingListShortcode;
@@ -64,6 +65,7 @@ final class Plugin
 
         ClassSessionsShortcode::register();
         BookingListShortcode::register();
+        BookingListBlock::register();
         GetSessionsByDateHandler::register();
         AddToCartValidation::register();
         OrderCompleted::register();

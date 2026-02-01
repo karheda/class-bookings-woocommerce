@@ -22,6 +22,18 @@
     --cb-transition: all 0.2s ease;
 }
 
+/* Gutenberg Block Custom Colors - Map custom properties to internal variables */
+.cb-gutenberg-block {
+    --cb-primary: var(--cb-primary-color, #2271b1);
+    --cb-primary-hover: color-mix(in srgb, var(--cb-primary-color, #2271b1) 85%, black);
+    --cb-primary-light: color-mix(in srgb, var(--cb-primary-color, #2271b1) 10%, white);
+    --cb-text: var(--cb-text-color, #1d2327);
+    --cb-text-muted: color-mix(in srgb, var(--cb-text-color, #1d2327) 60%, transparent);
+    --cb-border: var(--cb-secondary-color, #dcdcde);
+    --cb-bg-hover: var(--cb-secondary-color, #f6f7f7);
+    --cb-error: var(--cb-accent-color, #d63638);
+}
+
 /* ========================================
    Container
    ======================================== */
