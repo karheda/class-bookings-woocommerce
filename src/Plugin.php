@@ -134,6 +134,7 @@ final class Plugin
                     'statusError' => __('Failed to update session status.', 'class-booking'),
                     'confirmDelete' => __('Are you sure you want to delete this session? This action cannot be undone.', 'class-booking'),
                     'confirmToggle' => __('Are you sure you want to change the status of this session?', 'class-booking'),
+                    'requiredFields' => __('Please fill in all required fields.', 'class-booking'),
                 ],
             ]);
 

@@ -22,10 +22,16 @@ final class OrderCompleted
         $repo = new ClassSessionRepository();
 
         foreach ($order->get_items() as $item) {
-            $productId = $item->get_product_id();
-            $qty = $item->get_quantity();
+            $sessionId = $item->get_meta('_class_booking_session_id');
 
-            $repo->decreaseCapacity($productId, $qty);
+            if (!$sessionId) {
+                // Fallback to product_id for backwards compatibility
+                $productId = $item->get_product_id();
+                $repo->decreaseCapacity($productId, $item->get_quantity());
+                continue;
+            }
+
+            $repo->decreaseCapacityBySessionId((int) $sessionId, $item->get_quantity());
         }
     }
 }

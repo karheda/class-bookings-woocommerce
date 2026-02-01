@@ -148,8 +148,7 @@ final class BookingSessionsMetabox
                                        id="cb-session-date"
                                        name="session_date"
                                        class="cb-datepicker"
-                                       placeholder="<?php esc_attr_e('Select date', 'class-booking'); ?>"
-                                       required>
+                                       placeholder="<?php esc_attr_e('Select date', 'class-booking'); ?>">
                             </div>
                         </div>
 
@@ -162,8 +161,7 @@ final class BookingSessionsMetabox
                                        id="cb-start-time"
                                        name="start_time"
                                        class="cb-timepicker"
-                                       placeholder="<?php esc_attr_e('Select start time', 'class-booking'); ?>"
-                                       required>
+                                       placeholder="<?php esc_attr_e('Select start time', 'class-booking'); ?>">
                             </div>
 
                             <div class="cb-form-field">
@@ -174,8 +172,7 @@ final class BookingSessionsMetabox
                                        id="cb-end-time"
                                        name="end_time"
                                        class="cb-timepicker"
-                                       placeholder="<?php esc_attr_e('Select end time', 'class-booking'); ?>"
-                                       required>
+                                       placeholder="<?php esc_attr_e('Select end time', 'class-booking'); ?>">
                             </div>
                         </div>
 
@@ -188,7 +185,6 @@ final class BookingSessionsMetabox
                                        id="cb-capacity"
                                        name="capacity"
                                        min="1"
-                                       required
                                        placeholder="<?php esc_attr_e('Number of available spots', 'class-booking'); ?>">
                                 <p class="description">
                                     <?php _e('Maximum number of people that can book this session.', 'class-booking'); ?>

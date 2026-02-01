@@ -139,6 +139,23 @@ final class ClassSessionRepository
         );
     }
 
+    public function decreaseCapacityBySessionId(int $sessionId, int $qty): void
+    {
+        global $wpdb;
+
+        $wpdb->query(
+            $wpdb->prepare(
+                "UPDATE {$this->table}
+                 SET remaining_capacity = remaining_capacity - %d
+                 WHERE id = %d
+                 AND remaining_capacity >= %d",
+                $qty,
+                $sessionId,
+                $qty
+            )
+        );
+    }
+
     public function hasOverlappingSession(
         int $bookingId,
         string $date,

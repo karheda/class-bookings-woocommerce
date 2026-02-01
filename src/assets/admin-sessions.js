@@ -353,6 +353,12 @@
                 status: this.getElement('$status', '#cb-status').val(),
             };
 
+            // Validate required fields
+            if (!data.session_date || !data.start_time || !data.end_time || !data.capacity) {
+                this.showError(classBookingAdmin.i18n.requiredFields || 'Please fill in all required fields.');
+                return;
+            }
+
             const url = isEdit
                 ? this.config.apiBase + '/' + sessionId
                 : this.config.apiBase;
