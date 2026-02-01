@@ -24,10 +24,7 @@ final class ClassSessionSyncService
         $data = [
             'post_id'    => $post->ID,
             'capacity'   => (int) get_post_meta($post->ID, '_capacity', true),
-            'price'      => (float) get_post_meta($post->ID, '_price', true),
-            'start_date' => get_post_meta($post->ID, '_start_date', true),
-            'end_date'   => get_post_meta($post->ID, '_end_date', true),
-            'weekday'    => get_post_meta($post->ID, '_weekday', true),
+            'session_date' => get_post_meta($post->ID, '_session_date', true),
             'start_time' => get_post_meta($post->ID, '_start_time', true),
             'end_time'   => get_post_meta($post->ID, '_end_time', true),
             'status'     => 'active',

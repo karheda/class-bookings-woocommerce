@@ -1,0 +1,799 @@
+/**
+ * Class Booking - Admin Sessions Styles
+ */
+
+/* ========================================
+   Metabox Header
+   ======================================== */
+
+.class-booking-sessions-metabox {
+    margin: -6px -12px -12px;
+    padding: 20px;
+}
+
+.sessions-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.sessions-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#cb-add-session-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+#cb-add-session-btn .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* ========================================
+   Sessions List
+   ======================================== */
+
+.sessions-list {
+    margin-bottom: 20px;
+}
+
+.no-sessions-message {
+    padding: 40px 20px;
+    text-align: center;
+    background: #f6f7f7;
+    border: 1px dashed #c3c4c7;
+    border-radius: 4px;
+}
+
+.no-sessions-message p {
+    margin: 0;
+    color: #646970;
+    font-size: 14px;
+}
+
+.cb-sessions-table {
+    margin-top: 0;
+}
+
+.cb-sessions-table th {
+    font-weight: 600;
+}
+
+.cb-sessions-table td {
+    vertical-align: middle;
+}
+
+/* Column widths for better layout */
+.cb-sessions-table .session-date {
+    width: 15%;
+}
+
+.cb-sessions-table .session-time {
+    width: 20%;
+}
+
+.cb-sessions-table .session-capacity {
+    width: 10%;
+    text-align: center;
+}
+
+.cb-sessions-table .session-booked {
+    width: 20%;
+}
+
+.cb-sessions-table .session-status {
+    width: 12%;
+}
+
+.cb-sessions-table .session-actions {
+    width: 23%;
+    text-align: right;
+}
+
+/* Booked column styling */
+.cb-sessions-table .session-booked strong {
+    color: #2271b1;
+    font-weight: 600;
+}
+
+.cb-sessions-table .session-capacity {
+    font-weight: 600;
+}
+
+/* Status Badge - WordPress style */
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.status-badge.status-active {
+    background: #00a32a;
+    color: #fff;
+}
+
+.status-badge.status-inactive {
+    background: #dba617;
+    color: #fff;
+}
+
+/* Session Actions */
+.session-actions {
+    white-space: nowrap;
+}
+
+.session-actions .button {
+    margin-left: 4px;
+    padding: 3px 8px;
+    min-height: 0;
+    line-height: 1.4;
+    font-size: 12px;
+    height: auto;
+}
+
+.session-actions .button .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+.session-actions .button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.session-actions .button:disabled:hover {
+    background: #f6f7f7;
+    border-color: #dcdcde;
+    color: #a7aaad;
+}
+
+/* Loading Spinner */
+.cb-loading {
+    text-align: center;
+    padding: 20px;
+}
+
+/* ========================================
+   Flatpickr Customization
+   ======================================== */
+
+/* Make Flatpickr inputs look like WordPress inputs */
+.cb-datepicker,
+.cb-timepicker,
+input.flatpickr-input {
+    cursor: pointer !important;
+    background-color: #fff !important;
+    width: 100% !important;
+    padding: 8px 12px !important;
+    border: 1px solid #8c8f94 !important;
+    border-radius: 4px !important;
+    font-size: 14px !important;
+    line-height: 1.5 !important;
+    display: block !important;
+}
+
+.cb-datepicker:focus,
+.cb-timepicker:focus,
+input.flatpickr-input:focus {
+    border-color: #2271b1 !important;
+    box-shadow: 0 0 0 1px #2271b1 !important;
+    outline: none !important;
+}
+
+/* Hide the original hidden input */
+input.flatpickr-input[type="hidden"] {
+    display: none !important;
+}
+
+/* ========================================
+   Flatpickr CSS Variables
+   ======================================== */
+:root {
+    --fp-primary-color: #2271b1;
+    --fp-primary-hover: #135e96;
+    --fp-primary-light: #f0f6fc;
+    --fp-text-color: #1d2327;
+    --fp-text-muted: #50575e;
+    --fp-text-disabled: #a7aaad;
+    --fp-border-color: #dcdcde;
+    --fp-bg-hover: #f0f0f1;
+    --fp-bg-weekdays: #f6f7f7;
+    --fp-shadow: 0 3px 13px rgba(0, 0, 0, 0.1);
+    --fp-transition: all 0.2s ease;
+}
+
+/* ========================================
+   Flatpickr Calendar Positioning
+   ======================================== */
+.cb-modal .flatpickr-calendar {
+    z-index: 100001 !important;
+    position: absolute !important;
+    transition: var(--fp-transition);
+}
+
+/* Ensure Flatpickr calendar is visible and styled */
+.flatpickr-calendar.open {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* ========================================
+   Flatpickr Base Styles
+   ======================================== */
+.flatpickr-calendar {
+    box-shadow: var(--fp-shadow) !important;
+    border: 1px solid var(--fp-border-color) !important;
+    border-radius: 4px !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif !important;
+    background: #fff !important;
+    overflow: hidden !important;
+    width: 280px !important;
+}
+
+/* Make time picker more compact */
+.flatpickr-calendar.noCalendar {
+    width: auto !important;
+    min-width: 160px !important;
+}
+
+/* ========================================
+   Flatpickr Month Header
+   ======================================== */
+.flatpickr-months {
+    background: #fff !important;
+    border-bottom: 1px solid var(--fp-border-color) !important;
+    padding: 8px 0 !important;
+}
+
+.flatpickr-month {
+    background: transparent !important;
+    color: var(--fp-text-color) !important;
+    fill: var(--fp-text-color) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+}
+
+.flatpickr-current-month {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: var(--fp-text-color) !important;
+    padding: 7px 0 !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months {
+    background: transparent !important;
+    color: var(--fp-text-color) !important;
+    font-weight: 600 !important;
+    border: none !important;
+    padding: 4px 8px !important;
+    font-size: 16px !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    border-radius: 3px !important;
+    transition: var(--fp-transition) !important;
+    cursor: pointer !important;
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months:hover {
+    background: var(--fp-bg-hover) !important;
+}
+
+.flatpickr-current-month .numInputWrapper {
+    color: var(--fp-text-color) !important;
+}
+
+.flatpickr-current-month input.cur-year {
+    font-weight: 600 !important;
+    color: var(--fp-text-color) !important;
+    font-size: 16px !important;
+    padding: 4px 8px !important;
+    border-radius: 3px !important;
+    transition: var(--fp-transition) !important;
+}
+
+.flatpickr-current-month input.cur-year:hover {
+    background: var(--fp-bg-hover) !important;
+}
+
+/* ========================================
+   Flatpickr Navigation Arrows
+   ======================================== */
+.flatpickr-prev-month,
+.flatpickr-next-month {
+    fill: var(--fp-text-muted) !important;
+    color: var(--fp-text-muted) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 8px !important;
+    border-radius: 3px !important;
+    transition: var(--fp-transition) !important;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+    fill: var(--fp-primary-color) !important;
+    color: var(--fp-primary-color) !important;
+    background: var(--fp-primary-light) !important;
+}
+
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+    width: 14px !important;
+    height: 14px !important;
+}
+
+/* ========================================
+   Flatpickr Weekdays
+   ======================================== */
+.flatpickr-weekdays {
+    background: var(--fp-bg-weekdays) !important;
+    border-bottom: 1px solid var(--fp-border-color) !important;
+    padding: 4px 0 !important;
+}
+
+.flatpickr-weekday {
+    color: var(--fp-text-muted) !important;
+    font-weight: 600 !important;
+    font-size: 10px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.3px !important;
+}
+
+/* ========================================
+   Flatpickr Days Container
+   ======================================== */
+.flatpickr-days {
+    width: 280px !important;
+    padding: 0 !important;
+}
+
+.dayContainer {
+    width: 280px !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+    padding: 4px 8px !important;
+}
+
+/* ========================================
+   Flatpickr Individual Days
+   ======================================== */
+.flatpickr-day {
+    color: var(--fp-text-color) !important;
+    border: 2px solid transparent !important;
+    border-radius: 50% !important;
+    font-weight: 400 !important;
+    line-height: 32px !important;
+    height: 34px !important;
+    width: 34px !important;
+    max-width: 34px !important;
+    flex-basis: 34px !important;
+    margin: 1px !important;
+    font-size: 13px !important;
+    transition: var(--fp-transition) !important;
+    cursor: pointer !important;
+}
+
+.flatpickr-day:hover:not(.disabled):not(.selected) {
+    background: var(--fp-bg-hover) !important;
+    border-color: var(--fp-bg-hover) !important;
+    color: var(--fp-text-color) !important;
+    transform: scale(1.05);
+}
+
+/* Today */
+.flatpickr-day.today {
+    border-color: var(--fp-primary-color) !important;
+    background: transparent !important;
+    color: var(--fp-primary-color) !important;
+    font-weight: 600 !important;
+}
+
+.flatpickr-day.today:hover {
+    background: var(--fp-primary-light) !important;
+    border-color: var(--fp-primary-color) !important;
+    color: var(--fp-primary-color) !important;
+}
+
+/* Selected day */
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover,
+.flatpickr-day.selected.today {
+    background: var(--fp-primary-color) !important;
+    border-color: var(--fp-primary-color) !important;
+    color: #fff !important;
+    font-weight: 600 !important;
+    box-shadow: 0 2px 4px rgba(34, 113, 177, 0.3) !important;
+}
+
+/* Days from other months */
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: var(--fp-text-disabled) !important;
+    opacity: 0.5 !important;
+}
+
+.flatpickr-day.prevMonthDay:hover,
+.flatpickr-day.nextMonthDay:hover {
+    opacity: 0.7 !important;
+}
+
+/* Disabled days */
+.flatpickr-day.disabled,
+.flatpickr-day.disabled:hover {
+    color: var(--fp-border-color) !important;
+    cursor: not-allowed !important;
+    background: transparent !important;
+    opacity: 0.3 !important;
+    transform: none !important;
+}
+
+/* ========================================
+   Flatpickr Time Picker
+   ======================================== */
+.flatpickr-time {
+    border-top: 1px solid var(--fp-border-color) !important;
+    background: #fff !important;
+    padding: 10px 12px 15px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    max-height: 50px !important;
+}
+
+.flatpickr-time .numInputWrapper {
+    width: 55px !important;
+    height: 36px !important;
+    flex: 0 0 45px !important;
+}
+
+.flatpickr-time input {
+    color: var(--fp-text-color) !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    border: 1px solid var(--fp-border-color) !important;
+    border-radius: 4px !important;
+    padding: 0 !important;
+    transition: var(--fp-transition) !important;
+    text-align: center !important;
+    width: 55px !important;
+    height: 36px !important;
+}
+
+.flatpickr-time input:hover {
+    background: var(--fp-bg-hover) !important;
+    border-color: var(--fp-text-muted) !important;
+}
+
+.flatpickr-time input:focus {
+    background: var(--fp-primary-light) !important;
+    border-color: var(--fp-primary-color) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 2px rgba(34, 113, 177, 0.1) !important;
+}
+
+.flatpickr-time .flatpickr-time-separator {
+    color: var(--fp-text-color) !important;
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    width: 12px !important;
+    flex: 0 0 12px !important;
+    text-align: center !important;
+    line-height: 36px !important;
+}
+
+.flatpickr-time .flatpickr-am-pm {
+    color: var(--fp-text-color) !important;
+    font-weight: 600 !important;
+    font-size: 12px !important;
+    border: 1px solid var(--fp-border-color) !important;
+    border-radius: 4px !important;
+    width: 40px !important;
+    height: 36px !important;
+    margin-left: 8px !important;
+    transition: var(--fp-transition) !important;
+}
+
+.flatpickr-time .flatpickr-am-pm:hover {
+    background: var(--fp-bg-hover) !important;
+    border-color: var(--fp-text-muted) !important;
+}
+
+.flatpickr-time .flatpickr-am-pm:focus {
+    background: var(--fp-primary-light) !important;
+    border-color: var(--fp-primary-color) !important;
+    outline: none !important;
+}
+
+/* Time picker increment/decrement arrows */
+.flatpickr-time .numInputWrapper {
+    position: relative !important;
+}
+
+.flatpickr-time .numInputWrapper span {
+    position: absolute !important;
+    right: 0 !important;
+    width: 16px !important;
+    height: 10px !important;
+    border: none !important;
+    background: transparent !important;
+    opacity: 0 !important;
+    padding: 0 !important;
+    line-height: 16px !important;
+    transition: opacity 0.15s ease !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowUp {
+    top: 10px !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowDown {
+    bottom: 2px !important;
+    top: auto !important;
+}
+
+.flatpickr-time .numInputWrapper:hover span {
+    opacity: 0.6 !important;
+}
+
+.flatpickr-time .numInputWrapper span:hover {
+    opacity: 1 !important;
+    background: var(--fp-bg-hover) !important;
+    border-radius: 2px !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowUp:after,
+.flatpickr-time .numInputWrapper span.arrowDown:after {
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    border-width: 4px !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowUp:after {
+    border-bottom-color: var(--fp-text-muted) !important;
+}
+
+.flatpickr-time .numInputWrapper span.arrowDown:after {
+    border-top-color: var(--fp-text-muted) !important;
+}
+
+
+
+/* ========================================
+   Modal
+   ======================================== */
+
+.cb-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100000;
+}
+
+.cb-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.cb-modal-content {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    max-height: calc(100vh - 100px);
+    display: flex;
+    flex-direction: column;
+}
+
+.cb-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #dcdcde;
+}
+
+.cb-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.cb-modal-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #646970;
+    transition: color 0.2s;
+}
+
+.cb-modal-close:hover {
+    color: #1d2327;
+}
+
+.cb-modal-close .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+/* Modal Body */
+.cb-modal-body {
+    position: relative;
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+/* Modal Footer */
+.cb-modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 16px 24px;
+    border-top: 1px solid #dcdcde;
+    background: #f6f7f7;
+}
+
+/* ========================================
+   Form Styles
+   ======================================== */
+
+.cb-form-row {
+    margin-bottom: 20px;
+}
+
+.cb-form-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.cb-form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.cb-form-field label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #1d2327;
+}
+
+.cb-form-field .required {
+    color: #d63638;
+}
+
+.cb-form-field input[type="text"],
+.cb-form-field input[type="number"],
+.cb-form-field select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #8c8f94;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    background-color: #fff;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+.cb-form-field input::placeholder {
+    color: #a7aaad;
+}
+
+.cb-form-field input:focus,
+.cb-form-field select:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.cb-form-field .description {
+    margin: 6px 0 0;
+    font-size: 13px;
+    color: #646970;
+    font-style: italic;
+}
+
+/* Modal Error */
+.cb-modal-error {
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    background: #fcf0f1;
+    border-left: 4px solid #d63638;
+    border-radius: 4px;
+}
+
+.cb-modal-error p {
+    margin: 0;
+    color: #50575e;
+    font-size: 14px;
+}
+
+/* ========================================
+   Button States
+   ======================================== */
+
+#cb-save-session {
+    position: relative;
+    min-width: 120px;
+}
+
+#cb-save-session .spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    float: none;
+}
+
+.cb-modal-cancel:hover {
+    background: #f6f7f7;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+
+@media screen and (max-width: 782px) {
+    .cb-modal-content {
+        width: 95%;
+        margin: 20px auto;
+        max-height: calc(100vh - 40px);
+    }
+
+    .cb-form-row-2col {
+        grid-template-columns: 1fr;
+    }
+
+    .sessions-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    #cb-add-session-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .cb-sessions-table {
+        font-size: 13px;
+    }
+
+    .session-actions .button {
+        padding: 6px;
+    }
+}
+

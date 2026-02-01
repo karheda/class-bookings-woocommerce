@@ -166,4 +166,73 @@ final class ClassSessionRepository
         return (int) $wpdb->get_var($sql) > 0;
     }
 
+    /**
+     * Update an existing session
+     *
+     * @param int $id Session ID
+     * @param array $data Data to update
+     * @return bool True if updated successfully, false otherwise
+     */
+    public function update(int $id, array $data): bool
+    {
+        global $wpdb;
+
+        // Add updated_at timestamp
+        $data['updated_at'] = current_time('mysql');
+
+        $result = $wpdb->update(
+            $this->table,
+            $data,
+            ['id' => $id],
+            null, // Let WordPress determine format from data types
+            ['%d'] // ID is integer
+        );
+
+        return $result !== false;
+    }
+
+    /**
+     * Delete a session by ID
+     *
+     * @param int $id Session ID
+     * @return bool True if deleted successfully, false otherwise
+     */
+    public function delete(int $id): bool
+    {
+        global $wpdb;
+
+        $result = $wpdb->delete(
+            $this->table,
+            ['id' => $id],
+            ['%d']
+        );
+
+        return $result !== false;
+    }
+
+    /**
+     * Update session status
+     *
+     * @param int $id Session ID
+     * @param string $status New status (active/inactive)
+     * @return bool True if updated successfully, false otherwise
+     */
+    public function updateStatus(int $id, string $status): bool
+    {
+        global $wpdb;
+
+        $result = $wpdb->update(
+            $this->table,
+            [
+                'status' => $status,
+                'updated_at' => current_time('mysql')
+            ],
+            ['id' => $id],
+            ['%s', '%s'],
+            ['%d']
+        );
+
+        return $result !== false;
+    }
+
 }
